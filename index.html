@@ -4,47 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Team Adarit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #ff4444;
+      --bg-dark: #0f0f0f;
+      --bg-light: #f2f2f2;
+      --text-dark: #f2f2f2;
+      --text-light: #0f0f0f;
+    }
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0f0f0f;
-      color: #f2f2f2;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     header {
+      position: sticky;
+      top: 0;
       background: linear-gradient(to right, #1a1a1a, #000);
-      padding: 60px 20px;
+      padding: 40px 20px 20px;
       text-align: center;
+      z-index: 1000;
     }
     .logo {
-      max-width: 300px;
-      width: 100%;
-      margin-bottom: 20px;
+      max-width: 200px;
+      animation: fadeIn 1s ease-out;
     }
     .motto {
-      font-size: 1.4em;
+      font-size: 1.2em;
       font-weight: bold;
-      color: #ff4444;
+      color: var(--primary);
       text-transform: uppercase;
       letter-spacing: 1px;
+      animation: slideUp 1s ease-out;
+    }
+    .discord-btn, .mode-toggle {
+      display: inline-block;
+      margin: 15px 10px;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+    .discord-btn:hover, .mode-toggle:hover {
+      background-color: #cc0000;
     }
     section {
-      padding: 40px 20px;
+      padding: 30px 20px;
       max-width: 900px;
       margin: auto;
     }
     h2 {
-      color: #ff4444;
-      border-bottom: 2px solid #ff4444;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
       padding-bottom: 10px;
       margin-bottom: 20px;
     }
-    ul {
-      list-style: none;
-      padding: 0;
+    .accordion {
+      border: 1px solid #333;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #1a1a1a;
     }
-    ul li::before {
+    .accordion-header {
+      padding: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #222;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion-header:hover {
+      background-color: #333;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 15px;
+    }
+    .accordion-content ul {
+      list-style: none;
+      padding: 10px 0;
+      margin: 0;
+    }
+    .accordion-content ul li::before {
       content: "🚗 ";
+    }
+    .highlight {
+      margin-top: 10px;
+      font-weight: bold;
+      color: var(--primary);
     }
     footer {
       background-color: #111;
@@ -53,94 +112,189 @@
       font-size: 0.9em;
       color: #777;
     }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .news-card {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+.news-header {
+  padding: 15px;
+  font-weight: bold;
+  color: var(--primary);
+  background-color: #222;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.news-header:hover {
+  background-color: #333;
+}
+.news-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 15px;
+  transition: max-height 0.4s ease;
+}
+.news-body p {
+  padding: 10px 0;
+  margin: 0;
+}
+.news-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.toggle-icon {
+  font-size: 1.2em;
+}
+
   </style>
 </head>
 <body>
-<header style="background: linear-gradient(to right, #1a1a1a, #000); padding: 60px 20px; text-align: center;">
-  <img src="download (1).png" alt="Team Adarit Logo" class="logo" style="max-width: 300px; width: 100%; margin-bottom: 20px;" />
-  <div class="motto" style="font-size: 1.4em; font-weight: bold; color: #ff4444; text-transform: uppercase; letter-spacing: 1px;">
-    Built for Speed, Wired for Legacy
-  </div>
-  <a href="https://discord.gg/FgEWGyn4pj" target="_blank" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #ff4444; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-    Join Us on Discord
-  </a>
-</header>
 
+<header>
+  <img src="download (1).png" alt="Team Adarit Logo" class="logo" />
+  <div class="motto" id="motto"></div>
+  <a href="https://discord.gg/FgEWGyn4pj" target="_blank" class="discord-btn">Join Us on Discord</a>
+  <button class="mode-toggle" onclick="toggleMode()">Toggle Light/Dark Mode</button>
+</header>
 
 <section>
   <h2>Rules and Disciplinary Actions</h2>
 
-  <h3>📌 Follow Leadership</h3>
-  <ul>
-    <li>Respect decisions</li>
-    <li>Follow instructions</li>
-    <li>Ask questions respectfully</li>
-    <li>Stay disciplined</li>
-  </ul>
+  <div class="accordion">
+    <div class="accordion-header">📌 Follow Leadership <span>+</span></div>
+    <div class="accordion-content">
+      <ul>
+        <li>Respect decisions</li>
+        <li>Follow instructions</li>
+        <li>Ask questions respectfully</li>
+        <li>Stay disciplined</li>
+      </ul>
+    </div>
+  </div>
 
-  <h3>🚫 No Cyberbullying or Fights</h3>
-  <ul>
-    <li>No threats, false info, or offensive jokes</li>
-    <li>No toxic arguments</li>
-    <li>Report issues via Discord ticket</li>
-  </ul>
+  <div class="accordion">
+    <div class="accordion-header">🚫 No Cyberbullying or Fights <span>+</span></div>
+    <div class="accordion-content">
+      <ul>
+        <li>No threats, false info, or offensive jokes</li>
+        <li>No toxic arguments</li>
+        <li>Report issues via Discord ticket</li>
+      </ul>
+    </div>
+  </div>
 
-  <h3>🛠️ Conflict? Use Tickets</h3>
-  <ul>
-    <li>Submit a ticket for disputes</li>
-    <li>Staff will mediate</li>
-    <li>No resolution = both parties banned</li>
-  </ul>
+  <div class="accordion">
+    <div class="accordion-header">🛠️ Conflict? Use Tickets <span>+</span></div>
+    <div class="accordion-content">
+      <ul>
+        <li>Submit a ticket for disputes</li>
+        <li>Staff will mediate</li>
+        <li>No resolution = both parties banned</li>
+      </ul>
+      <p class="highlight">🛡️ Keep it respectful. Keep it united.</p>
+    </div>
+  </div>
 
-  <p class="highlight">🛡️ Keep it respectful. Keep it united.</p>
+  <!-- Additional accordions remain unchanged -->
 
-  <h3>📌 Private Server Rules</h3>
-  <ul>
-    <li>No intentional ramming</li>
-    <li>Respect other players’ space and gameplay</li>
-    <li>No cash begging</li>
-    <li>Grind through your own effort. No shortcuts</li>
-    <li>No personal attacks</li>
-    <li>Reckless driving is allowed at your own risk</li>
-    <li>You break it, you own it</li>
-  </ul>
-
-  <hr style="margin: 40px 0; border: 1px dashed #444;" />
-
-  <h3>⚖️ Disciplinary Guidelines</h3>
-  <p><strong>Purpose:</strong> To maintain a respectful, cooperative, and honest club environment. Violations will be handled based on severity.</p>
-
-  <h4>📜 Code of Conduct</h4>
-  <ul>
-    <li><strong>Respect:</strong> No discrimination, harassment, or abuse</li>
-    <li><strong>Teamwork:</strong> Cooperate and contribute</li>
-    <li><strong>Integrity:</strong> No cheating, hacking, or dishonesty</li>
-    <li><strong>Representation:</strong> Act positively in public and private</li>
-  </ul>
-
-  <h4>🚦 Types of Violations</h4>
-  <ul>
-    <li><strong>Minor:</strong> Disrespectful language, small disputes, ignoring basic rules</li>
-    <li><strong>Moderate:</strong> Repeated minor issues, disrupting activities, refusal to cooperate</li>
-    <li><strong>Severe:</strong> Harassment, cheating, major disruptions, damaging club reputation</li>
-  </ul>
-
-  <h4>🛠️ Disciplinary Actions</h4>
-  <ul>
-    <li><strong>Warning:</strong> Verbal or written notice</li>
-    <li><strong>Suspension:</strong> Temporary removal from activities</li>
-    <li><strong>Probation:</strong> Behavior monitored—further violations = harsher penalties</li>
-    <li><strong>Ban:</strong> Permanent removal from the club</li>
-  </ul>
-
-  <p class="highlight">📌 Tandaan—maaaring magbago ang mga patakaran depende sa kalagayan ng club at sa progreso ng bawat miyembro.</p>
 </section>
 
+<footer>
+  <section>
+  <h2>Team News & Updates</h2>
 
-  <footer>
-    &copy; 2025 Team Adarit. Built for Speed, Wired for Legacy.
-    -Azu2k25
-  </footer>
+  <div class="news-card">
+    <div class="news-header" onclick="toggleNews(this)">
+      <span>📢 October 4, 2025 — Website Launch</span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="news-body">
+      <img src="image343443.png" alt="Website Launch" class="news-img" />
+      <p>We’ve officially launched Team Adarit’s website! Explore our rules, lore, and legacy. More features coming soon—including member profiles and sticker downloads.</p>
+    </div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header" onclick="toggleNews(this)">
+      <span>📢 October 4, 2025 — Sticker Drop</span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="news-body">
+      <img src="image.png" alt="Sticker Drop" class="news-img" />
+      <p>Secret muna nasa Dc ang mga Stickers hehe :P </p>
+    </div>
+  </div>
+</section>
+
+  &copy; 2025 Team Adarit. Built with grit and legacy.
+</footer>
+
+<script>
+  // Accordion toggle
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const content = header.nextElementSibling;
+      const icon = header.querySelector('span');
+      const isOpen = content.style.maxHeight;
+      document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+      document.querySelectorAll('.accordion-header span').forEach(i => i.textContent = '+');
+      if (!isOpen) {
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.textContent = '−';
+      }
+    });
+  });
+// News toggle
+function toggleNews(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.style.maxHeight;
+  document.querySelectorAll('.news-body').forEach(b => b.style.maxHeight = null);
+  document.querySelectorAll('.toggle-icon').forEach(i => i.textContent = '+');
+  if (!isOpen) {
+    body.style.maxHeight = body.scrollHeight + "px";
+    icon.textContent = '−';
+  }
+}
+
+  // Random motto
+  const mottos = [
+    "Built for Speed, Wired for Legacy",
+    "From Asphalt to Honor",
+    "Drive with Pride, Park with Purpose",
+    "Legacy Isn’t Given—It’s Earned"
+  ];
+  document.getElementById('motto').textContent = mottos[Math.floor(Math.random() * mottos.length)];
+
+  // Dark/Light mode toggle
+  function toggleMode() {
+    const root = document.documentElement;
+    const dark = getComputedStyle(root).getPropertyValue('--bg-dark').trim();
+    const currentBg = getComputedStyle(document.body).backgroundColor;
+    if (currentBg === dark || currentBg === 'rgb(15, 15, 15)') {
+      root.style.setProperty('--bg-dark', '#f2f2f2');
+      root.style.setProperty('--text-dark', '#0f0f0f');
+    } else {
+      root.style.setProperty('--bg-dark', '#0f0f0f');
+      root.style.setProperty('--text-dark', '#f2f2f2');
+    }
+  }
+</script>
+
 </body>
 </html>
-
