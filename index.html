@@ -1,303 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Team Adarit</title>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #ff4444;
-      --bg-dark: #0f0f0f;
-      --bg-light: #f2f2f2;
-      --text-dark: #f2f2f2;
-      --text-light: #0f0f0f;
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    header {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(to right, #1a1a1a, #000);
-      padding: 40px 20px 20px;
-      text-align: center;
-      z-index: 1000;
-    }
-    .logo {
-      max-width: 200px;
-      animation: fadeIn 1s ease-out;
-    }
-    .motto {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      animation: slideUp 1s ease-out;
-    }
-    .discord-btn, .mode-toggle {
-      display: inline-block;
-      margin: 15px 10px;
-      padding: 10px 20px;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      text-decoration: none;
-    }
-    .discord-btn:hover, .mode-toggle:hover {
-      background-color: #cc0000;
-    }
-    section {
-      padding: 30px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    h2 {
-      color: var(--primary);
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-    .accordion {
-      border: 1px solid #333;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      background-color: #1a1a1a;
-    }
-    .accordion-header {
-      padding: 15px;
-      cursor: pointer;
-      font-weight: bold;
-      background-color: #222;
-      color: var(--primary);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .accordion-header:hover {
-      background-color: #333;
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      padding: 0 15px;
-    }
-    .accordion-content ul {
-      list-style: none;
-      padding: 10px 0;
-      margin: 0;
-    }
-    .accordion-content ul li::before {
-      content: "🚗 ";
-    }
-    .highlight {
-      margin-top: 10px;
-      font-weight: bold;
-      color: var(--primary);
-    }
-    footer {
-      background-color: #111;
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      color: #777;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .news-card {
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  overflow: hidden;
-}
-.news-header {
-  padding: 15px;
-  font-weight: bold;
-  color: var(--primary);
-  background-color: #222;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.news-header:hover {
-  background-color: #333;
-}
-.news-body {
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 15px;
-  transition: max-height 0.4s ease;
-}
-.news-body p {
-  padding: 10px 0;
-  margin: 0;
-}
-.news-img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-.toggle-icon {
-  font-size: 1.2em;
-}
+    <title>Calculator ni Ayzu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-  </style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #8dbbf3; /* soft blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #ada5a5; /* soft card background */
+            padding: 30px 40px;
+            border-radius: 20px;
+            width: 400px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-3px);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #374151;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-weight: 500;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #4b5563;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: #f3f4f6;
+            color: #111827;
+            transition: all 0.2s ease;
+        }
+
+        select:focus {
+            border-color: #1054a8;
+            box-shadow: 0 0 6px rgba(96,165,250,0.3);
+            outline: none;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 18px;
+            padding: 12px;
+            border-radius: 12px;
+            background-color: #f3f4f6;
+        }
+
+        .error {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .success {
+            color: #166534;
+            background: #d1fae5;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <img src="BCO.png" alt="Team Adarit Logo" class="logo" />
-  <div class="motto" id="motto"></div>
-  <a href="https://discord.gg/89bjrSPEZm" target="_blank" class="discord-btn">Join Us on Discord</a>
-  <button class="mode-toggle" onclick="toggleMode()">Toggle Light/Dark Mode</button>
-</header>
+<div class="container">
+    <h2>Calculator ni Ayzu</h2>
 
-<section>
-  <h2>Rules and Disciplinary Actions</h2>
+    <label>Route:</label>
+    <select id="route" onchange="updateStops(); calculateFare();">
+        <option value="Bulakan-Malolos">Bulakan-Malolos</option>
+        <option value="Malolos-Bulakan">Malolos-Bulakan</option>
+    </select>
 
-  <div class="accordion">
-    <div class="accordion-header">📌 Follow Leadership <span>+</span></div>
-    <div class="accordion-content">
-      <ul>
-        <li>Respect decisions</li>
-        <li>Follow instructions</li>
-        <li>Ask questions respectfully</li>
-        <li>Stay disciplined</li>
-      </ul>
-    </div>
-  </div>
+    <label>Stop:</label>
+    <select id="stop" onchange="calculateFare();"></select>
 
-  <div class="accordion">
-    <div class="accordion-header">🚫 No Cyberbullying or Fights <span>+</span></div>
-    <div class="accordion-content">
-      <ul>
-        <li>No threats, false info, or offensive jokes</li>
-        <li>No toxic arguments</li>
-        <li>Report issues via Discord ticket</li>
-      </ul>
-    </div>
-  </div>
+    <label>Fare Type:</label>
+    <select id="fareType" onchange="calculateFare();">
+        <option value="regular">Regular</option>
+        <option value="discount">Discount</option>
+    </select>
 
-  <div class="accordion">
-    <div class="accordion-header">🛠️ Conflict? Use Tickets <span>+</span></div>
-    <div class="accordion-content">
-      <ul>
-        <li>Submit a ticket for disputes</li>
-        <li>Staff will mediate</li>
-        <li>No resolution = both parties banned</li>
-      </ul>
-      <p class="highlight">🛡️ Keep it respectful. Keep it united.</p>
-    </div>
-  </div>
+    <label>Passengers:</label>
+    <select id="passengers" onchange="calculateFare();">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
 
-  <!-- Additional accordions remain unchanged -->
+    <label>Cash:</label>
+    <select id="cash" onchange="calculateFare();">
+        <option value="20">₱20</option>
+        <option value="50">₱50</option>
+        <option value="100">₱100</option>
+    </select>
 
-</section>
-
-<footer>
-  <section>
-  <h2>Team News & Updates</h2>
-
-  <div class="news-card">
-    <div class="news-header" onclick="toggleNews(this)">
-      <span>📢 October 4, 2025 — Website Launch</span>
-      <span class="toggle-icon">+</span>
-    </div>
-    <div class="news-body">
-      <img src="image343443.png" alt="Website Launch" class="news-img" />
-      <p>We’ve officially launched Team Adarit’s website! Explore our rules, lore, and legacy. More features coming soon—including member profiles and sticker downloads.</p>
-    </div>
-  </div>
-
-  <div class="news-card">
-    <div class="news-header" onclick="toggleNews(this)">
-      <span>📢 October 4, 2025 — Sticker Drop</span>
-      <span class="toggle-icon">+</span>
-    </div>
-    <div class="news-body">
-      <img src="image.png" alt="Sticker Drop" class="news-img" />
-      <p>Secret muna nasa Dc ang mga Stickers hehe :P </p>
-    </div>
-  </div>
-</section>
-
-  &copy; 2025 Team Adarit. Built with grit and legacy.
-</footer>
+    <div id="result"></div>
+</div>
 
 <script>
-  // Accordion toggle
-  document.querySelectorAll('.accordion-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const content = header.nextElementSibling;
-      const icon = header.querySelector('span');
-      const isOpen = content.style.maxHeight;
-      document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-      document.querySelectorAll('.accordion-header span').forEach(i => i.textContent = '+');
-      if (!isOpen) {
-        content.style.maxHeight = content.scrollHeight + "px";
-        icon.textContent = '−';
-      }
-    });
-  });
-// News toggle
-function toggleNews(header) {
-  const body = header.nextElementSibling;
-  const icon = header.querySelector('.toggle-icon');
-  const isOpen = body.style.maxHeight;
-  document.querySelectorAll('.news-body').forEach(b => b.style.maxHeight = null);
-  document.querySelectorAll('.toggle-icon').forEach(i => i.textContent = '+');
-  if (!isOpen) {
-    body.style.maxHeight = body.scrollHeight + "px";
-    icon.textContent = '−';
-  }
+const fareMatrix = {
+    "Bulakan-Malolos": {
+        "PITPITAN/SANJOSE": {regular:13, discount:11},
+        "MAYSANTOL/SAN NICOLAS": {regular:13, discount:11},
+        "MAMBOG": {regular:15, discount:13},
+        "MATIMBO": {regular:17, discount:15},
+        "PANASAHAN": {regular:19, discount:17},
+        "BAGNA": {regular:21, discount:19},
+        "ATLAG": {regular:23, discount:21},
+        "SAN JUAN/STO. ROSARIO": {regular:25, discount:23}
+    },
+    "Malolos-Bulakan": {
+        "SAN JUAN/ATLAG": {regular:13, discount:11},
+        "BAGNA/PANASAHAN": {regular:13, discount:11},
+        "MATIMBO": {regular:15, discount:13},
+        "MAMBOG": {regular:17, discount:15},
+        "PITPITAN": {regular:19, discount:17},
+        "SAN NICOLAS": {regular:21, discount:19},
+        "MAYSANTOL": {regular:23, discount:21},
+        "SANJOSE/BAGUMBAHAY": {regular:25, discount:23}
+    }
+};
+
+function updateStops() {
+    const route = document.getElementById("route").value;
+    const stopSelect = document.getElementById("stop");
+    stopSelect.innerHTML = "";
+
+    for (let stop in fareMatrix[route]) {
+        let option = document.createElement("option");
+        option.value = stop;
+        option.text = stop;
+        stopSelect.appendChild(option);
+    }
+
+    calculateFare(); 
 }
 
-  // Random motto
-  const mottos = [
-    "Built for Speed, Wired for Legacy",
-    "From Asphalt to Honor",
-    "Drive with Pride, Park with Purpose",
-    "Legacy Isn’t Given—It’s Earned"
-  ];
-  document.getElementById('motto').textContent = mottos[Math.floor(Math.random() * mottos.length)];
+function calculateFare() {
+    const route = document.getElementById("route").value;
+    const stop = document.getElementById("stop").value;
+    const fareType = document.getElementById("fareType").value;
+    const passengers = parseInt(document.getElementById("passengers").value);
+    const cash = parseFloat(document.getElementById("cash").value);
+    const resultDiv = document.getElementById("result");
 
-  // Dark/Light mode toggle
-  function toggleMode() {
-    const root = document.documentElement;
-    const dark = getComputedStyle(root).getPropertyValue('--bg-dark').trim();
-    const currentBg = getComputedStyle(document.body).backgroundColor;
-    if (currentBg === dark || currentBg === 'rgb(15, 15, 15)') {
-      root.style.setProperty('--bg-dark', '#f2f2f2');
-      root.style.setProperty('--text-dark', '#0f0f0f');
-    } else {
-      root.style.setProperty('--bg-dark', '#0f0f0f');
-      root.style.setProperty('--text-dark', '#f2f2f2');
+    if (!stop) return;
+
+    const baseFare = fareMatrix[route][stop][fareType];
+    const totalFare = baseFare * passengers;
+
+    let output = "Total Fare: ₱ " + totalFare.toLocaleString();
+
+    if (!isNaN(cash) && cash >= 0) {
+        const change = cash - totalFare;
+        if (change < 0) {
+            output += "<br>Kulang ang pera. You need ₱" + Math.abs(change).toLocaleString() + " more.";
+            resultDiv.className = "error";
+        } else {
+            output += "<br>Change: ₱ " + change.toLocaleString();
+            resultDiv.className = "success";
+        }
     }
-  }
+
+    resultDiv.innerHTML = output;
+}
+
+updateStops();
 </script>
 
 </body>
 </html>
-
-
-
