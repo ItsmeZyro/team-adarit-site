@@ -2,194 +2,321 @@
 <html>
 <head>
     <title>Calculator ni Ayzu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: 'Roboto', sans-serif;
-            background: #8dbbf3; /* soft blue background */
+            background: #8dbbf3;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #374151;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .sidebar button:hover {
+            background: #4b5563;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
 
         .container {
-            background: #ada5a5; /* soft card background */
-            padding: 30px 40px;
+            background: white;
+            padding: 25px;
             border-radius: 20px;
-            width: 400px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transition: transform 0.2s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-3px);
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         h2 {
-            margin-bottom: 25px;
-            font-weight: 700;
-            color: #374151;
-            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            text-align: left;
-            font-weight: 500;
             margin-top: 15px;
             margin-bottom: 5px;
-            color: #4b5563;
+            font-weight: 500;
         }
 
         select {
             width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            font-size: 16px;
-            background-color: #f3f4f6;
-            color: #111827;
-            transition: all 0.2s ease;
-        }
-
-        select:focus {
-            border-color: #1054a8;
-            box-shadow: 0 0 6px rgba(96,165,250,0.3);
-            outline: none;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 18px;
             padding: 12px;
-            border-radius: 12px;
-            background-color: #f3f4f6;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
         }
 
-        .error {
-            color: #b91c1c;
-            background: #fee2e2;
+        #result1, #result2 {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
         }
 
         .success {
-            color: #166534;
             background: #d1fae5;
+            color: #065f46;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* 📱 MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .sidebar h3 {
+                display: none;
+            }
+
+            .sidebar button {
+                width: auto;
+                margin: 0;
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+
+            .main {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Calculator ni Ayzu</h2>
+<div class="sidebar">
+    <h3>Ayzu Fare</h3>
+    <button onclick="showPage('single')">Single Drop</button>
+    <button onclick="showPage('distance')">Pickup → Drop</button>
+</div>
 
-    <label>Route:</label>
-    <select id="route" onchange="updateStops(); calculateFare();">
-        <option value="Bulakan-Malolos">Bulakan-Malolos</option>
-        <option value="Malolos-Bulakan">Malolos-Bulakan</option>
-    </select>
+<div class="main">
 
-    <label>Stop:</label>
-    <select id="stop" onchange="calculateFare();"></select>
+    <!-- SINGLE DROP -->
+    <div class="container page active" id="single">
+        <h2>Single Drop Fare</h2>
 
-    <label>Fare Type:</label>
-    <select id="fareType" onchange="calculateFare();">
-        <option value="regular">Regular</option>
-        <option value="discount">Discount</option>
-    </select>
+        <label>Route:</label>
+        <select id="route1" onchange="updateStops1()">
+            <option value="Bulakan-Malolos">Bulakan → Malolos</option>
+            <option value="Malolos-Bulakan">Malolos → Bulakan</option>
+        </select>
 
-    <label>Passengers:</label>
-    <select id="passengers" onchange="calculateFare();">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
+        <label>Drop-off:</label>
+        <select id="stop1" onchange="calculateSingle()"></select>
 
-    <label>Cash:</label>
-    <select id="cash" onchange="calculateFare();">
-        <option value="20">₱20</option>
-        <option value="50">₱50</option>
-        <option value="100">₱100</option>
-    </select>
+        <label>Fare Type:</label>
+        <select id="fareType1" onchange="calculateSingle()">
+            <option value="regular">Regular</option>
+            <option value="discount">Discount</option>
+        </select>
 
-    <div id="result"></div>
+        <label>Passengers:</label>
+        <select id="passengers1" onchange="calculateSingle()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <label>Cash:</label>
+        <select id="cash1" onchange="calculateSingle()">
+            <option value="20">₱20</option>
+            <option value="50">₱50</option>
+            <option value="100">₱100</option>
+            <option value="200">₱200</option>
+        </select>
+
+        <div id="result1"></div>
+    </div>
+
+    <!-- DISTANCE -->
+    <div class="container page" id="distance">
+        <h2>Pickup → Drop-off Fare</h2>
+
+        <label>Route:</label>
+        <select id="route2" onchange="updateStops2()">
+            <option value="Bulakan-Malolos">Bulakan → Malolos</option>
+            <option value="Malolos-Bulakan">Malolos → Bulakan</option>
+        </select>
+
+        <label>Pickup:</label>
+        <select id="pickup" onchange="calculateDistance()"></select>
+
+        <label>Drop-off:</label>
+        <select id="dropoff" onchange="calculateDistance()"></select>
+
+        <label>Fare Type:</label>
+        <select id="fareType2" onchange="calculateDistance()">
+            <option value="regular">Regular</option>
+            <option value="discount">Discount</option>
+        </select>
+
+        <label>Passengers:</label>
+        <select id="passengers2" onchange="calculateDistance()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <div id="result2"></div>
+    </div>
+
 </div>
 
 <script>
-const fareMatrix = {
-    "Bulakan-Malolos": {
-        "PITPITAN/SANJOSE": {regular:13, discount:11},
-        "MAYSANTOL/SAN NICOLAS": {regular:13, discount:11},
-        "MAMBOG": {regular:15, discount:13},
-        "MATIMBO": {regular:17, discount:15},
-        "PANASAHAN": {regular:19, discount:17},
-        "BAGNA": {regular:21, discount:19},
-        "ATLAG": {regular:23, discount:21},
-        "SAN JUAN/STO. ROSARIO": {regular:25, discount:23}
-    },
-    "Malolos-Bulakan": {
-        "SAN JUAN/ATLAG": {regular:13, discount:11},
-        "BAGNA/PANASAHAN": {regular:13, discount:11},
-        "MATIMBO": {regular:15, discount:13},
-        "MAMBOG": {regular:17, discount:15},
-        "PITPITAN": {regular:19, discount:17},
-        "SAN NICOLAS": {regular:21, discount:19},
-        "MAYSANTOL": {regular:23, discount:21},
-        "SANJOSE/BAGUMBAHAY": {regular:25, discount:23}
-    }
+const routes = {
+    "Bulakan-Malolos": [
+        "PITPITAN/SANJOSE","MAYSANTOL/SAN NICOLAS","MAMBOG","MATIMBO",
+        "PANASAHAN","BAGNA","ATLAG","SAN JUAN/STO. ROSARIO"
+    ],
+    "Malolos-Bulakan": [
+        "SAN JUAN/ATLAG","BAGNA/PANASAHAN","MATIMBO","MAMBOG",
+        "PITPITAN","SAN NICOLAS","MAYSANTOL","SANJOSE/BAGUMBAYAN"
+    ]
 };
 
-function updateStops() {
-    const route = document.getElementById("route").value;
-    const stopSelect = document.getElementById("stop");
-    stopSelect.innerHTML = "";
-
-    for (let stop in fareMatrix[route]) {
-        let option = document.createElement("option");
-        option.value = stop;
-        option.text = stop;
-        stopSelect.appendChild(option);
-    }
-
-    calculateFare(); 
+function showPage(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
 }
 
-function calculateFare() {
-    const route = document.getElementById("route").value;
-    const stop = document.getElementById("stop").value;
-    const fareType = document.getElementById("fareType").value;
-    const passengers = parseInt(document.getElementById("passengers").value);
-    const cash = parseFloat(document.getElementById("cash").value);
-    const resultDiv = document.getElementById("result");
-
-    if (!stop) return;
-
-    const baseFare = fareMatrix[route][stop][fareType];
-    const totalFare = baseFare * passengers;
-
-    let output = "Total Fare: ₱ " + totalFare.toLocaleString();
-
-    if (!isNaN(cash) && cash >= 0) {
-        const change = cash - totalFare;
-        if (change < 0) {
-            output += "<br>Kulang ang pera. You need ₱" + Math.abs(change).toLocaleString() + " more.";
-            resultDiv.className = "error";
-        } else {
-            output += "<br>Change: ₱ " + change.toLocaleString();
-            resultDiv.className = "success";
-        }
-    }
-
-    resultDiv.innerHTML = output;
+function updateStops1(){
+    const route=document.getElementById("route1").value;
+    const stop=document.getElementById("stop1");
+    stop.innerHTML="";
+    routes[route].forEach((s,i)=>stop.innerHTML+=`<option value="${i}">${s}</option>`);
+    calculateSingle();
 }
 
-updateStops();
+function calculateSingle(){
+    const i=parseInt(stop1.value);
+    const type=fareType1.value;
+    const p=parseInt(passengers1.value);
+    const cash=parseFloat(cash1.value);
+    if(isNaN(i)) return;
+
+    let fare=13;
+    if(i>=4) fare+=(i-3)*2;
+    if(type==="discount") fare-=2;
+
+    const total=fare*p;
+    const change=cash-total;
+
+    result1.innerHTML="Total Fare: ₱ "+total.toLocaleString()+
+        (change<0? "<br>Kulang ₱"+Math.abs(change) :
+        "<br>Change: ₱ "+change.toLocaleString());
+
+    result1.className=change<0?"error":"success";
+}
+
+function updateStops2(){
+    const route=document.getElementById("route2").value;
+    pickup.innerHTML="";
+    dropoff.innerHTML="";
+    routes[route].forEach((s,i)=>{
+        pickup.innerHTML+=`<option value="${i}">${s}</option>`;
+        dropoff.innerHTML+=`<option value="${i}">${s}</option>`;
+    });
+    calculateDistance();
+}
+
+function calculateDistance(){
+    const a=parseInt(pickup.value);
+    const b=parseInt(dropoff.value);
+    const type=fareType2.value;
+    const p=parseInt(passengers2.value);
+    if(isNaN(a)||isNaN(b)) return;
+
+    const dist=Math.abs(b-a);
+    if(dist===0){
+        result2.innerHTML="Pickup and Drop-off cannot be same.";
+        result2.className="error";
+        return;
+    }
+
+    let fare=13;
+    if(dist>4) fare+=(dist-4)*2;
+    if(type==="discount") fare-=2;
+
+    const total=fare*p;
+    result2.innerHTML="Distance: "+dist+" barangay(s)<br>Total Fare: ₱ "+total.toLocaleString();
+    result2.className="success";
+}
+
+updateStops1();
+updateStops2();
 </script>
 
 </body>
