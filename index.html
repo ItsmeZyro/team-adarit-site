@@ -7,9 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -46,9 +44,7 @@
             font-size: 14px;
         }
 
-        .sidebar button:hover {
-            background: #4b5563;
-        }
+        .sidebar button:hover { background: #4b5563; }
 
         /* MAIN CONTENT */
         .main {
@@ -68,10 +64,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        h2 { text-align: center; margin-bottom: 20px; }
 
         label {
             display: block;
@@ -96,29 +89,15 @@
             font-size: 16px;
         }
 
-        .success {
-            background: #d1fae5;
-            color: #065f46;
-        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
 
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .active {
-            display: block;
-        }
+        .page { display: none; }
+        .active { display: block; }
 
         /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
+            body { flex-direction: column; }
 
             .sidebar {
                 width: 100%;
@@ -128,9 +107,7 @@
                 padding: 10px;
             }
 
-            .sidebar h3 {
-                display: none;
-            }
+            .sidebar h3 { display: none; }
 
             .sidebar button {
                 width: auto;
@@ -139,14 +116,9 @@
                 font-size: 13px;
             }
 
-            .main {
-                padding: 15px;
-            }
+            .main { padding: 15px; }
 
-            .container {
-                padding: 20px;
-                border-radius: 15px;
-            }
+            .container { padding: 20px; border-radius: 15px; }
         }
     </style>
 </head>
@@ -230,6 +202,14 @@
             <option value="5">5</option>
         </select>
 
+        <label>Cash:</label>
+        <select id="cash2" onchange="calculateDistance()">
+            <option value="20">₱20</option>
+            <option value="50">₱50</option>
+            <option value="100">₱100</option>
+            <option value="200">₱200</option>
+        </select>
+
         <div id="result2"></div>
     </div>
 
@@ -297,6 +277,7 @@ function calculateDistance(){
     const b=parseInt(dropoff.value);
     const type=fareType2.value;
     const p=parseInt(passengers2.value);
+    const cash=parseFloat(cash2.value);
     if(isNaN(a)||isNaN(b)) return;
 
     const dist=Math.abs(b-a);
@@ -311,8 +292,13 @@ function calculateDistance(){
     if(type==="discount") fare-=2;
 
     const total=fare*p;
-    result2.innerHTML="Distance: "+dist+" barangay(s)<br>Total Fare: ₱ "+total.toLocaleString();
-    result2.className="success";
+    const change=cash-total;
+
+    result2.innerHTML="Distance: "+dist+" barangay(s)<br>Total Fare: ₱ "+total.toLocaleString()+
+        (change<0? "<br>Kulang ₱"+Math.abs(change) :
+        "<br>Change: ₱ "+change.toLocaleString());
+
+    result2.className=change<0?"error":"success";
 }
 
 updateStops1();
