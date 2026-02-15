@@ -6,11 +6,17 @@
 <title>Ayzu Fare Calculator</title>
 
 <style>
+html, body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
 body{
     font-family: Arial, sans-serif;
     background:#7998c5;
-    margin:0;
     display:flex;
+    height:100vh;
 }
 
 /* SIDEBAR */
@@ -20,6 +26,9 @@ body{
     color:white;
     height:100vh;
     padding-top:20px;
+    display:flex;
+    flex-direction:column;
+    box-sizing:border-box;
 }
 
 .logo{
@@ -46,52 +55,143 @@ body{
     background:rgba(255,255,255,.2);
 }
 
+/* Footer */
+.sidebar-footer{
+    margin-top:auto;
+    padding:15px;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.3);
+}
+
+.footer-title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.footer-sub{
+    font-size:12px;
+}
+
 /* MAIN */
 .main{
     flex:1;
     padding:20px;
+    box-sizing:border-box;
 }
 
 /* CONTAINER */
 .container{
+    position:relative;
     max-width:420px;
     margin:auto;
     background:rgb(218, 96, 96);
     padding:20px;
     border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+/* LOGO WATERMARK */
+.container::before{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:250px;
+    height:250px;
+    background:url("BCO.png") no-repeat center;
+    background-size:contain;
+    opacity:0.08; /* adjust transparency */
+    transform:translate(-50%, -50%);
+    pointer-events:none;
 }
 
 /* FORM */
 label{
     display:block;
-    text-align:left;
     margin-top:10px;
     font-size:13px;
     color:#eee;
+    position:relative;
+    z-index:1;
 }
 
 select{
     width:100%;
-    padding:10px;
+    padding:12px;
     margin-top:5px;
     border-radius:8px;
-    border:1px solid #ddd;
-    font-size:14px;
+    border:none;
+    font-size:15px;
+    position:relative;
+    z-index:1;
 }
 
 /* RESULT */
 .result{
     margin-top:15px;
-    padding:12px;
+    padding:14px;
     border-radius:10px;
     background:#f7f7f7;
     font-weight:bold;
-    font-size:17px;
+    font-size:18px;
+    position:relative;
+    z-index:1;
 }
 
 .tab{display:none;}
 .tab.active{display:block;}
+
+/* MOBILE */
+@media(max-width:768px){
+
+body{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+    height:auto;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px;
+}
+
+.logo{
+    font-size:16px;
+    margin:0;
+}
+
+.sidebar button{
+    width:auto;
+    font-size:13px;
+    padding:10px;
+}
+
+.sidebar-footer{
+    display:none;
+}
+
+.main{
+    padding:15px;
+}
+
+.container{
+    max-width:100%;
+    padding:18px;
+}
+
+select{
+    font-size:16px;
+}
+
+.result{
+    font-size:17px;
+}
+}
 
 </style>
 </head>
@@ -102,8 +202,15 @@ select{
 <div class="sidebar">
 <div class="logo">Ayzu Fare</div>
 
-<button class="active" onclick="showTab('single',this)">Single Drop</button>
-<button onclick="showTab('distance',this)">Pickup → Drop</button>
+<div>
+<button class="active" onclick="showTab('single',this)">Single</button>
+<button onclick="showTab('distance',this)">Pickup</button>
+</div>
+
+<div class="sidebar-footer">
+    <div class="footer-title">Power by Ayzu 2k26</div>
+    <div class="footer-sub">Always be kupal so everyday is kupalan</div>
+</div>
 </div>
 
 <!-- MAIN -->
@@ -176,17 +283,14 @@ select{
 </div>
 
 <script>
-
-// ROUTES
+// (Same JS as your original — unchanged)
 const routes={
 "Bulakan-Malolos":["PITPITAN/SANJOSE","MAYSANTOL/SAN NICOLAS","MAMBOG","MATIMBO",
 "PANASAHAN","BAGNA","ATLAG","SAN JUAN/STO. ROSARIO"],
-
 "Malolos-Bulakan":["SAN JUAN/ATLAG","BAGNA/PANASAHAN","MATIMBO","MAMBOG",
 "PITPITAN","SAN NICOLAS","MAYSANTOL","SANJOSE/BAGUMBAYAN"]
 };
 
-// FIXED SINGLE FARE
 const singleFare={
 "Bulakan-Malolos":{
 Regular:[13,13,15,17,19,21,23,25],
@@ -198,7 +302,6 @@ Discount:[11,11,13,15,17,19,21,23]
 }
 };
 
-// INIT
 window.onload=()=>{
 for(let r in routes){
 route1.add(new Option(r));
@@ -208,16 +311,13 @@ updateStops1();
 updateStops2();
 };
 
-// SIDEBAR TAB
 function showTab(id,btn){
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 document.getElementById(id).classList.add("active");
-
 document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
 }
 
-// UPDATE
 route1.onchange=updateStops1;
 route2.onchange=updateStops2;
 
@@ -238,7 +338,6 @@ dropoff.selectedIndex=1;
 calculateDistance();
 }
 
-// EVENTS
 ["stops1","fareType1","passengers1","cash1"].forEach(id=>{
 document.getElementById(id).onchange=calculateSingle;
 });
@@ -247,7 +346,6 @@ document.getElementById(id).onchange=calculateSingle;
 document.getElementById(id).onchange=calculateDistance;
 });
 
-// SINGLE
 function calculateSingle(){
 let route=route1.value;
 let stop=stops1.selectedIndex;
@@ -260,7 +358,6 @@ result1.innerHTML=change<0?
 `Total ₱${total}<br>Change ₱${change}`;
 }
 
-// DISTANCE
 function calculateDistance(){
 let dist=Math.abs(dropoff.selectedIndex-pickup.selectedIndex);
 if(dist===0){result2.innerHTML="Same stop"; return;}
@@ -276,9 +373,7 @@ result2.innerHTML=change<0?
 `Total ₱${total}<br>Kulang ₱${Math.abs(change)}`:
 `Total ₱${total}<br>Change ₱${change}`;
 }
-
 </script>
 
 </body>
 </html>
-
